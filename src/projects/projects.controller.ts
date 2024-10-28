@@ -35,8 +35,8 @@ export class ProjectsController {
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.projectsService.remove(+id);
+  remove(@Param() params: IdDto) {
+    return this.projectsService.remove(params.id);
   }
 
   // Tasks Routes

@@ -3,9 +3,9 @@ import { Document, SchemaTypes, Types } from "mongoose";
 
 export const taskStatus = {
   PENDING: 'PENDING',
-  ON_HOLD: 'ONHOLD',
-  IN_PROGRESS: 'INPROGRESS',
-  UNDER_REVIEW: 'UNDERREVIEW',
+  ON_HOLD: 'ON_HOLD',
+  IN_PROGRESS: 'IN_PROGRESS',
+  UNDER_REVIEW: 'UNDER_REVIEW',
   COMPLETED: 'COMPLETED'
 } as const
 

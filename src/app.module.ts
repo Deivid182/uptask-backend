@@ -1,13 +1,14 @@
 import { Module } from '@nestjs/common';
-import { ProjectsModule } from './projects/projects.module';
 import { TasksModule } from './tasks/tasks.module';
+import { ProjectsModule } from './projects/projects.module';
 import { MongooseModule } from '@nestjs/mongoose';
 import { envs } from './config';
+import { UsersModule } from './users/users.module';
 
 @Module({
   imports: [
     MongooseModule.forRoot(envs.DATABASE_URL),
-    ProjectsModule, TasksModule],
+    ProjectsModule, TasksModule, UsersModule],
   controllers: [],
   providers: [],
 })

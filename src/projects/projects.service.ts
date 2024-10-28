@@ -38,16 +38,16 @@ export class ProjectsService {
     )
 
     if (!project) {
-      return new NotFoundException('Project not found');
+      throw new NotFoundException('Project not found');
     }
 
     return project
   }
 
-  async remove(id: number) {
+  async remove(id: string) {
     const project = await this.projectModel.findByIdAndDelete(id);
     if (!project) {
-      return new NotFoundException('Project not found');
+      throw new NotFoundException('Project not found');
     }
 
     return project
