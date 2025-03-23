@@ -1,9 +1,7 @@
 import { IsEnum } from "class-validator";
-import { TaskStatus, taskStatus } from "src/tasks/schema/task.schema";
+import { TaskStatus } from "@prisma/client";
 
 export class UpdateTaskStatusDto {
-  @IsEnum(taskStatus, {
-    message: 'Invalid status'
-  })
+  @IsEnum(TaskStatus, { message: 'Status must be one of PENDING, ON_HOLD, IN_PROGRESS, UNDER_REVIEW, COMPLETED' })
   status: TaskStatus
 }

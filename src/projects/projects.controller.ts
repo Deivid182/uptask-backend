@@ -7,7 +7,6 @@ import { IdDto } from 'src/common/dtos/id.dto';
 import { CreateTaskDto } from 'src/tasks/dto/create-task.dto';
 import { Request } from 'express';
 import { UpdateTaskDto } from 'src/tasks/dto/update-task.dto';
-import { TaskStatus } from 'src/tasks/schema/task.schema';
 import { UpdateTaskStatusDto } from './dto/update-task-status.dto';
 
 @Controller('projects')
