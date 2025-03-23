@@ -8,10 +8,7 @@ async function bootstrap() {
 
   app.enableCors({
     origin: (origin, callback) => {
-      if (!origin) return callback(null, true);
-      if (envs.ALLOWED_ORIGINS.includes(origin)) {
-        return callback(null, true);
-      }
+      if (!origin || envs.ALLOWED_ORIGINS.includes(origin)) return callback(null, true);
       return callback(new Error('Not allowed by CORS'), false);
     },
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
