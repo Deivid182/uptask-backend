@@ -6,7 +6,7 @@ import { PrismaService } from 'src/prisma/prisma.service';
 export class SchedulerService {
   constructor(private readonly prisma: PrismaService) {}
 
-  @Cron('*/1 * * * *')
+  @Cron('*/10 * * * *')
   async handleCron() {
     const now = new Date();
     await this.prisma.token.deleteMany({
