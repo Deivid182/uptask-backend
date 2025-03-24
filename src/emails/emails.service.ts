@@ -17,7 +17,7 @@ export class EmailsService {
           Hello, ${name}, you have signed up on Uptask, now you have to verify your email address.
         </p>
         <p>Click the following link: </p>
-        <a href="${envs.FRONTEND_URL}/verify/">Verify email</a>
+        <a href="${envs.FRONTEND_URL}/auth/verify">Verify email</a>
         <p>And enter the following token: ${token}</p>
         <p>This link will expire in 5 minutes.</p>
       `
