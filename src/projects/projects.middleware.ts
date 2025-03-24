@@ -18,6 +18,8 @@ export class ProjectsMiddleware implements NestMiddleware {
   ){}
   async use(req: Request, res: Response, next: NextFunction) {
     const project = await this.projectsService.findOne(req.params.id);
+    if(!project) return res.status(404).json({ message: "Project not found" });
     req.project = project
+    next();
   }
 }

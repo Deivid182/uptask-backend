@@ -13,6 +13,7 @@ import { TasksService } from 'src/tasks/tasks.service';
 export class ProjectsModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
     consumer.apply(ProjectsMiddleware).forRoutes(
+      { path: '/projects/:id', method: RequestMethod.GET },
       { path: '/projects/:id/tasks', method: RequestMethod.GET },
       { path: '/projects/:id/tasks', method: RequestMethod.POST },
       { path: '/projects/:id/tasks/:taskId', method: RequestMethod.GET },
