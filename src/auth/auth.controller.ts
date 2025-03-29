@@ -1,7 +1,6 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, HttpCode, HttpStatus } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { LoginDto } from './dto/login.dto';
-import { VerifyAccountDto } from './dto/verify-account.dto';
+import { ForgotPasswordDto, LoginDto, VerifyAccountDto, VerifyTokenDto } from './dto';
 
 @Controller('auth')
 export class AuthController {
@@ -14,8 +13,20 @@ export class AuthController {
   }
 
   @HttpCode(HttpStatus.OK)
-  @Post('/verify-account')
+  @Post('verify-account')
   verifyAccount(@Body() verifyAccountDto: VerifyAccountDto) {
     return this.authService.verifyAccount(verifyAccountDto);
+  }
+
+  @HttpCode(HttpStatus.OK)
+  @Post('forgot-password')
+  forgotPassword(@Body() forgotPasswordDto: ForgotPasswordDto) {
+    return this.authService.forgotPassword(forgotPasswordDto.email);
+  }
+
+  @HttpCode(HttpStatus.OK)
+  @Post('verify-token')
+  verifyToken(@Body() verifyTokenDto: VerifyTokenDto) {
+    return this.authService.verifyToken(verifyTokenDto);
   }
 }

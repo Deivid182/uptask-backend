@@ -1,11 +1,10 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
-import * as bcrypt from 'bcrypt'
+import { ConflictException, Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { LoginDto } from './dto/login.dto';
 import { PrismaService } from '../prisma/prisma.service';
-import { VerifyAccountDto } from './dto/verify-account.dto';
 import { EmailsService } from '../emails/emails.service';
 import { generateToken, checkPassword } from '../utils';
+import { VerifyTokenDto, VerifyAccountDto, LoginDto } from './dto';
+import { User } from '@prisma/client';
 
 @Injectable()
 export class AuthService {
@@ -82,6 +81,10 @@ export class AuthService {
       throw new UnauthorizedException('Invalid token')
     }
 
+    const now = new Date()
+    if(tokenFound.expiresAt < now) {
+      throw new UnauthorizedException('Token expired')
+    }
 
     await Promise.allSettled([
       this.prisma.user.update({
@@ -100,5 +103,70 @@ export class AuthService {
     ])
 
     return { message: 'Account verified successfully' }
+  }
+
+  async verifyToken(verifyTokenDto: VerifyTokenDto) {
+    const { token } = verifyTokenDto
+
+    const tokenFound = await this.prisma.token.findFirst({
+      where: {
+        token
+      }
+    })
+
+    if(!tokenFound) {
+      throw new UnauthorizedException('Invalid token')
+    }
+
+    const now = new Date()
+    if(tokenFound.expiresAt < now) {
+      throw new UnauthorizedException('Token expired')
+    }
+
+    return { message: 'Token is valid' }
+  }
+
+  async forgotPassword(email: string) {
+    const user = await this.findUser(email)
+
+    // console.log(user)
+
+    return await this.requestNewToken(user)
+  }
+
+  async findUser(email: string) {
+    const user = await this.prisma.user.findUnique({
+      where: {
+        email
+      }
+    })
+
+    if(!user) {
+      throw new NotFoundException('User not found')
+    }
+
+    return user
+  }
+
+  async requestNewToken(user: User) {
+
+    const token = generateToken()
+    const expiresAt = new Date(Date.now() + 5 * 60 * 1000)
+    
+    await this.prisma.token.create({
+      data: {
+        token,
+        expiresAt,
+        user: {
+          connect: {
+            id: user.id
+          }
+        }
+      }
+    })
+
+    await this.emailsService.sendPasswordResetToken(user.email, user.name, token)
+
+    return { message: 'Email sent successfully' }
   }
 }
