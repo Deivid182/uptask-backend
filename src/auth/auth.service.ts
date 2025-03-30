@@ -3,7 +3,7 @@ import { JwtService } from '@nestjs/jwt';
 import { PrismaService } from '../prisma/prisma.service';
 import { EmailsService } from '../emails/emails.service';
 import { generateToken, checkPassword } from '../utils';
-import { VerifyTokenDto, VerifyAccountDto, LoginDto } from './dto';
+import { VerifyTokenDto, VerifyAccountDto, LoginDto, UpdatePasswordDto } from './dto';
 import { User } from '@prisma/client';
 
 @Injectable()
@@ -168,5 +168,15 @@ export class AuthService {
     await this.emailsService.sendPasswordResetToken(user.email, user.name, token)
 
     return { message: 'Email sent successfully' }
+  }
+
+  async updatePassword(updatePasswordDto: UpdatePasswordDto & VerifyTokenDto) {
+
+    // const { password, passwordConfirmation, token } = updatePasswordDto
+
+    // console.log(updatePasswordDto)
+
+    return updatePasswordDto
+
   }
 }

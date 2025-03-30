@@ -1,6 +1,6 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, HttpCode, HttpStatus } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { ForgotPasswordDto, LoginDto, VerifyAccountDto, VerifyTokenDto } from './dto';
+import { ForgotPasswordDto, LoginDto, UpdatePasswordDto, VerifyAccountDto, VerifyTokenDto } from './dto';
 
 @Controller('auth')
 export class AuthController {
@@ -28,5 +28,13 @@ export class AuthController {
   @Post('verify-token')
   verifyToken(@Body() verifyTokenDto: VerifyTokenDto) {
     return this.authService.verifyToken(verifyTokenDto);
+  }
+  @HttpCode(HttpStatus.OK)
+  @Post('update-password/:token')
+  updatePassword(@Body() updatePasswordDto: UpdatePasswordDto, @Param() verifyTokenDto: VerifyTokenDto) {
+    return this.authService.updatePassword({
+      ...updatePasswordDto,
+      ...verifyTokenDto
+    });
   }
 }
